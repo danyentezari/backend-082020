@@ -1,0 +1,1 @@
+mongodb+srv://admin01:psx12345@cluster0-oikl7.mongodb.net/astro?retryWrites=true&w=majority
