@@ -126,7 +126,7 @@ server.get(
 
 server.listen(
     // port number
-    3001, 
+    process.env.PORT || 3001, 
     // callback when (and if) the connection is OK
     () => {
         console.log('Your server is now running http://localhost:3001/')
