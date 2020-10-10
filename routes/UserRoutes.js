@@ -40,8 +40,6 @@ router.post(
                     // 4. Upload the user's avatar
                     const files = Object.values(req.files);
 
-                    console.log('files', files)
-
                     await cloudinary.uploader.upload(
                         files[0].path,
                         (cloudinaryResult, err) => {
@@ -181,6 +179,38 @@ router.post(
     (req, res) => {
         UserModel
         .find({ _id: req.user.id })
+        .then(
+            (document) => {
+                res.send(document)
+            }
+        ).catch(
+            (e)=> {
+                console.log('e', e);
+                res.send({ e: e })
+            }
+        )
+
+    }
+)
+
+router.post(
+    '/update',
+    passport.authenticate('jwt', {session: false}),
+    (req, res) => {
+
+        // Model.findByIdAndUpdate(id, { $set: { name: 'jason bourne' }}, options, callback)
+
+        UserModel
+        .findByIdAndUpdate(
+            req.user.id, 
+            {
+                $set: {
+                    firstName: req.body.firstName,
+                    lastName: req.body.lastName,
+                    email: req.body.email
+                }
+            }
+        )
         .then(
             (document) => {
                 res.send(document)
