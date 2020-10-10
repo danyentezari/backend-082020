@@ -55,6 +55,10 @@ mongoose
 
 server.use(bodyParser.urlencoded( {extended: false} ));
 server.use(bodyParser.json());
+
+// server.use(bodyParser.urlencoded({extended:true, limit:'50mb'}));
+// server.use(bodyParser.json({limit:'50mb'})); 
+
 server.use(cors());
 server.use(passport.initialize());
 server.use(expressFormData.parse());

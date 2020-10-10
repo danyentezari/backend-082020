@@ -8,6 +8,7 @@ const cloudinary = require('cloudinary');
 const secret = process.env.SECRET;
 
 const UserModel = require('../models/UserModel');
+const passport = require('passport');
 
 router.post(
     '/register',
@@ -38,6 +39,8 @@ router.post(
 
                     // 4. Upload the user's avatar
                     const files = Object.values(req.files);
+
+                    console.log('files', files)
 
                     await cloudinary.uploader.upload(
                         files[0].path,
@@ -81,6 +84,12 @@ router.post(
                         }
                     )
                 }
+            }
+        )
+        .catch(
+            (e) => {
+                console.log('error', e);
+                res.send({ e: e })
             }
         )
     }
@@ -130,6 +139,7 @@ router.post(
                         .catch(
                             (e) => {
                                 console.log('e', e)
+                                res.send({ e: e })
                             }
                         )
                     } 
@@ -162,6 +172,26 @@ router.post(
                 res.send(result);
             }
         )
+    }
+)
+
+router.post(
+    '/find',
+    passport.authenticate('jwt', {session: false}),
+    (req, res) => {
+        UserModel
+        .find({ _id: req.user.id })
+        .then(
+            (document) => {
+                res.send(document)
+            }
+        ).catch(
+            (e)=> {
+                console.log('e', e);
+                res.send({ e: e })
+            }
+        )
+
     }
 )
 
